@@ -2,17 +2,12 @@ import React from "react";
 import NoteForm from "../components/NoteForm";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
+import api from "../lib/axios";
 
 const CreatePage = () => {
   const navigate = useNavigate();
   const createNote = async (note) => {
-    const res = await fetch("http://localhost:5000/api/notes", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(note),
-    });
+    const res = await api.post("/notes", note);
     toast.success("Created Successfully");
     navigate("/");
   };

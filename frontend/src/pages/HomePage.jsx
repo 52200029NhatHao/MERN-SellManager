@@ -5,6 +5,7 @@ import RateLimitedUI from "../components/RateLimitUI";
 import axios from "axios";
 import toast from "react-hot-toast";
 import NoteForm from "../components/NoteForm";
+import api from "../lib/axios";
 
 const HomePage = () => {
   const [isRateLimited, setIsRateLimited] = useState(false);
@@ -23,11 +24,8 @@ const HomePage = () => {
   };
 
   const deleteNote = async (_id) => {
-    const res = await fetch(`http://localhost:5000/api/notes/${_id}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-    });
-    if (res.ok) {
+    const res = await api.delete(`/notes/${_id}`);
+    if (res.status === 200) {
       setNotes((prevNotes) => prevNotes.filter((note) => note._id !== _id));
       toast.success("Updated successfully");
       return;
@@ -37,13 +35,7 @@ const HomePage = () => {
   };
 
   const updateNote = async (note) => {
-    const res = await fetch(`http://localhost:5000/api/notes/${note._id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(note),
-    });
+    const res = await api.put(`/notes/${note._id}`, note);
     setNotes((prevNotes) =>
       prevNotes.map((n) =>
         n._id === note._id
@@ -58,7 +50,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/notes");
+        const res = await api.get("/notes");
         setNotes(res.data);
         setIsRateLimited(false);
       } catch (error) {

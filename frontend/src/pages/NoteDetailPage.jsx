@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import api from "../lib/axios";
 const NoteDetailPage = () => {
   const [note, setNote] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -8,13 +9,13 @@ const NoteDetailPage = () => {
   useEffect(() => {
     const fetchNote = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/notes/${id}`);
-        if (!res.ok) {
-          console.log("Error fetching data:", res.status);
+        const res = await api.get(`/notes/${id}`);
+
+        if (res.status !== 200) {
+          console.log("Error fetching data:", res);
           return;
         }
-        const data = await res.json();
-        setNote(data);
+        setNote(res.data);
       } catch (error) {
         console.error("Fetch error:", error);
       }

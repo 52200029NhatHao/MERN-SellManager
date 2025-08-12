@@ -4,7 +4,8 @@
   "main": "src/server.js",
   "type": "module",
   "scripts": {
-    "dev": "node --watch --env-file=src/.env src/server.js"
+    "dev": "node --watch --env-file=src/.env src/server.js",
+    "start": "node --watch --env-file=src/.env src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +16,7 @@
     "@upstash/redis": "^1.34.9",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "mern-sellmanager": "file:..",
     "mongoose": "^7.0.3"
   }
 }
